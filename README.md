@@ -61,7 +61,13 @@ docker-compose exec api composer install
 ### Build database - Running migrations
 
 ```
-php artisan migrate
+docker-compose exec api php artisan migrate
+```
+
+### Preloading data (optional)
+
+```
+php artisan db:seed
 ```
 
 ## Working with graphql
