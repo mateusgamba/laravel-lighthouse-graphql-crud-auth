@@ -37,7 +37,7 @@ class AuthController extends Controller
         $login = Arr::only($request->toArray(), ['email', 'password']);
 
         if (!Auth::attempt($login)) {
-            return response()->json([ 'error' => 'Unauthorised' ], 401);
+            return $this->unauthorized();
         }
 
         $objToken = $this->getAccessToken($request);
@@ -92,5 +92,26 @@ class AuthController extends Controller
         ]);
 
         return json_decode((string) $response->getBody(), true);
+    }
+
+    public function refreshToken(Request $request): JsonResponse
+    {
+        $refreshToken = $request->header('refreshToken');
+
+        $oClient = OClient::where('password_client', 1)->first();
+
+        try {
+            $response = Http::post(env('OAUTH_URL'), [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $refreshToken,
+                'client_id' => $oClient->id,
+                'client_secret' => $oClient->secret,
+                'scope' => '',
+            ]);
+            $objToken = json_decode((string) $response->getBody(), true);
+            return response()->json($objToken, 200);
+        } catch (Exception $e) {
+            return $this->unauthorized();
+        }
     }
 }

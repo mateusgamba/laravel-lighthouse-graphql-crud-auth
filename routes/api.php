@@ -23,6 +23,7 @@ Route::get('/', function () {
 
 Route::post('register', [ AuthController::class, 'register' ]);
 Route::post('login', [ AuthController::class, 'login' ]);
+Route::post('refresh-token', [ AuthController::class, 'refreshToken' ]);
 
 Route::get('posts', [ PostController::class, 'index' ]);
 Route::get('posts/{post}', [ PostController::class, 'show' ]);
