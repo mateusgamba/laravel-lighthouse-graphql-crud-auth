@@ -70,6 +70,12 @@ docker-compose exec api php artisan migrate
 php artisan db:seed
 ```
 
+### Generates the encryption keys
+
+```
+php artisan passport:keys --force
+```
+
 ## Working with graphql
 
 You can open GraphQL browser via the following link:

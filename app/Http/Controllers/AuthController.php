@@ -53,6 +53,11 @@ class AuthController extends Controller
     {
         $request->user()->token()->revoke();
 
+        $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
+        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId(
+            $request->user()->token()->id
+        );
+
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
