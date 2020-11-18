@@ -20,7 +20,10 @@ class LoginMutator
         $objToken = $this->getAccessToken($request);
 
         return [
-            'token' => $objToken['access_token']
+            'token' => $objToken['access_token'],
+            'token_refresh' => $objToken['refresh_token'],
+            'token_type' => $objToken['token_type'],
+            'expires_in' => $objToken['expires_in'],
         ];
     }
 
