@@ -8,4 +8,7 @@ type Auth {
 extend type Mutation {
     login(email: String!, password: String!): Auth!
     @field(resolver: "LoginMutator@login")
+
+    refresh(refresh: String!): Auth!
+    @field(resolver: "LoginMutator@refresh")
 }
