@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * @return void
      */
     public function run(): void
     {
-        $this->call([
-            UserSeeder::class,
-            PostSeeder::class,
+        User::factory(1)->create([
+            'email' => 'noel@natal.com'
         ]);
     }
 }

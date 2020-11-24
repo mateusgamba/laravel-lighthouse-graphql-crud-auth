@@ -8,3 +8,25 @@ extend type Query @guard {
     posts: [Post]!
     @field(resolver: "PostQuery@all")
 }
+
+extend type Mutation @guard {
+    createPost(
+        title: String!
+        content: String!
+    ): Post!
+    @field(resolver: "PostMutator@store")
+
+    updatePost(
+        id: ID!
+        post: PostUpdate!
+    ): Post!
+    @field(resolver: "PostMutator@update")
+
+    deletePost(id: ID!): MessageResponse!
+    @field(resolver: "PostMutator@delete")
+}
+
+input PostUpdate {
+    title: String
+    content: String
+}

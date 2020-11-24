@@ -73,7 +73,7 @@ php artisan db:seed
 ### Generates the encryption keys
 
 ```
-php artisan passport:keys --force
+php artisan passport:install --force
 ```
 
 ## Working with graphql
@@ -90,6 +90,19 @@ And run the following query:
     hello
 }
 ```
+## Authentication
+
+```graphql
+mutation {
+  login(email: "mateusgamba@gmail.com", password: "123123") {
+    token
+    token_refresh
+    token_type
+    expires_in
+  }
+}
+```
+
 
 The response will be:
 ```
