@@ -7,71 +7,76 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Laravel\Passport\Client as OClient;
 use App\GraphQL\Exceptions\CustomException;
+use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class LoginMutator
 {
-    public function login($root, array $request): array
+    /**
+     * @param null $root
+     * @param array $request
+     * @return array
+     */
+    public function login($root = null, array $request): array
     {
+
         $request = Arr::except($request, 'directive');
 
         if (!Auth::attempt($request)) {
             return $this->unauthorized();
         }
 
-        $objToken = $this->getAccessToken($request);
+        $request['username'] = $request['email'];
+        unset($request['email']);
 
-        return [
-            'token' => $objToken['access_token'],
-            'token_refresh' => $objToken['refresh_token'],
-            'token_type' => $objToken['token_type'],
-            'expires_in' => $objToken['expires_in'],
-        ];
+        return $this->oAuthRequest('password', $request);
     }
 
     /**
+     * @param null $root
+     * @param array $request
      * @return array
      */
-    public function getAccessToken(array $request): array
+    public function refresh($root = null, array $request, GraphQLContext $context): array
     {
-        $oClient = OClient::where('password_client', 1)->first();
+        $refreshToken = $context->request()->header('refresh-token');
 
-        $response = Http::post(env('OAUTH_URL'), [
-            'grant_type' => 'password',
-            'client_id' => $oClient->id,
-            'client_secret' => $oClient->secret,
-            'username' => $request['email'],
-            'password' => $request['password'],
-            'scope' => '',
-        ]);
+        $data = [ 'refresh_token' => $refreshToken ];
 
-        return json_decode((string) $response->getBody(), true);
+        return $this->oAuthRequest('refresh_token', $data);
     }
 
-    public function refresh($rootValue, array $request): array
+    /**
+     * @return CustomException
+     */
+    public function unauthorized(): CustomException
     {
-        $request = Arr::only($request, ['refresh']);
+        throw new CustomException(__('auth.failed'));
+    }
 
+    /**
+     * @param string $grantType
+     * @param array $data
+     * @return array
+     */
+    public function oAuthRequest(string $grantType, array $data): array
+    {
         $oClient = OClient::where('password_client', 1)->first();
 
-        try {
-            $response = Http::post(env('OAUTH_URL'), [
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $request['refresh'],
-                'client_id' => $oClient->id,
-                'client_secret' => $oClient->secret,
-                'scope' => '',
-            ]);
+        $dataClient = [
+            'grant_type' => $grantType,
+            'client_id' => $oClient->id,
+            'client_secret' => $oClient->secret,
+            'scope' => '',
+        ];
 
-            $objToken = json_decode((string) $response->getBody(), true);
+        $parameters = array_merge($dataClient, $data);
 
-            return [
-                'token' => $objToken['access_token'],
-                'token_refresh' => $objToken['refresh_token'],
-                'token_type' => $objToken['token_type'],
-                'expires_in' => $objToken['expires_in'],
-            ];
-        } catch(\Exception $e) {
-            throw new CustomException(__('auth.failed'));
+        $response = Http::post(env('OAUTH_URL'), $parameters);
+
+        if ($response->status() === 200) {
+            return json_decode((string) $response->getBody(), true);
         }
+
+        return $this->unauthorized();
     }
 }

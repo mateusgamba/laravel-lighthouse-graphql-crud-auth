@@ -2,11 +2,15 @@ type Post {
     id: ID!
     title: String
     content: String
+    user: User
 }
 
-extend type Query @guard {
+extend type Query {
     posts: [Post]!
     @field(resolver: "PostQuery@all")
+
+    post(id: ID!): Post!
+    @field(resolver: "PostQuery@find")
 }
 
 extend type Mutation @guard {

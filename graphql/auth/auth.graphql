@@ -1,6 +1,6 @@
 type Auth {
-    token: String
-    token_refresh: String
+    access_token: String
+    refresh_token: String
     token_type: String
     expires_in: Int
 }
@@ -9,6 +9,6 @@ extend type Mutation {
     login(email: String!, password: String!): Auth!
     @field(resolver: "LoginMutator@login")
 
-    refresh(refresh: String!): Auth!
+    refresh: Auth!
     @field(resolver: "LoginMutator@refresh")
 }

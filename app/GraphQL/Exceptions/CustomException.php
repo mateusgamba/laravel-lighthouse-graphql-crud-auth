@@ -7,11 +7,10 @@ use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
 class CustomException extends Exception implements RendersErrorsExtensions
 {
-    /**
-     * @var @string
-     */
-    protected $reason;
 
+    /**
+     * @param string $message
+     */
     public function __construct(string $message)
     {
         parent::__construct($message);
@@ -19,7 +18,6 @@ class CustomException extends Exception implements RendersErrorsExtensions
 
     /**
      * @return bool
-     * @api
      */
     public function isClientSafe(): bool
     {
@@ -28,7 +26,6 @@ class CustomException extends Exception implements RendersErrorsExtensions
 
     /**
      * @return string
-     * @api
      */
     public function getCategory(): string
     {

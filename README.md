@@ -4,16 +4,14 @@ This boilerplate provides a simple and powerful start for your API.
 
 It provides the following features:
 
-Security
-* Login
-* Logout
-
-Posts
-* Create
-* List
-* Find
-* Update
-* Delete
+* CRUD (create / read / update / delete) on posts
+* Creating comments on post page
+* Pagination on posts listing
+* Searching on posts
+* Authentication (login / logout / refresh token)
+* Creating user account
+* Update user profile and changing password
+* Application ready for production
 
 The API is developed with the following packages:
 * Laravel 8.14
@@ -22,7 +20,7 @@ The API is developed with the following packages:
 
 In addition, it is running on Docker.
 
-## Prerequisites
+## Pre-requisites
 
 You need to ensure that you have installed [Docker Composer](https://docs.docker.com/compose/install/) globally.
 
@@ -76,7 +74,7 @@ php artisan db:seed
 php artisan passport:install --force
 ```
 
-## Working with graphql
+## Testing Graphql
 
 You can open GraphQL browser via the following link:
 
@@ -90,26 +88,116 @@ And run the following query:
     hello
 }
 ```
-## Authentication
-
-```graphql
-mutation {
-  login(email: "mateusgamba@gmail.com", password: "123123") {
-    token
-    token_refresh
-    token_type
-    expires_in
-  }
-}
-```
-
-
 The response will be:
 ```
 {
     "data": {
         "hello": "it is working!"
     }
+}
+```
+
+## Schemas
+
+### Authentication
+
+```graphql
+mutation {
+  login(email: "noel@christmas.com", password: "password") {
+    access_token
+    refresh_token
+    token_type
+    expires_in
+  }
+}
+
+"""
+To get a new token you must add refresh-token parameter to HTTP Headers.
+
+{
+  "refresh-token": "{RefreshToken}"
+}
+"""
+mutation {
+  refresh {
+    access_token
+    refresh_token
+    token_type
+    expires_in
+  }
+}
+
+```
+### Post Mutation
+
+The Post Mutation needs Authentication, you must add Bearer Authentication to Header.
+
+```
+{
+  "Authorization": "Bearer __TOKEN__"
+}
+```
+
+```graphql
+mutation {
+  createPost(title: "Hello", content: "Hello World") {
+    id
+    title
+    content
+    user {
+      id
+      name
+    }
+  }
+}
+
+mutation {
+  updatePost(id: 1, post: { title: "Working", content: "It's working" }) {
+    id
+    title
+    content
+    user {
+      id
+      name
+    }
+  }
+}
+
+mutation {
+  deletePost(id: 1) {
+    message
+  }
+}
+```
+
+### Post Query
+```graphql
+"""
+List all post
+"""
+{
+  posts {
+    id
+    title
+    user {
+      id
+      name
+    }
+  }
+}
+
+"""
+Find post
+"""
+{
+  post(id: 1) {
+    id
+    title
+    user {
+      id
+      name
+    }
+  }
 }
 ```
 

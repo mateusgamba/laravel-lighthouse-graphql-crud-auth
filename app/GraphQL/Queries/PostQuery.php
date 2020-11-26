@@ -7,8 +7,23 @@ use Illuminate\Support\Collection;
 
 class PostQuery
 {
-    public function all($root, array $request): Collection
+    /**
+     * @param null $root
+     * @param array $request
+     * @return Collection
+     */
+    public function all($root = null, array $request): Collection
     {
         return Post::all();
+    }
+
+    /**
+     * @param null $root
+     * @param array $request
+     * @return Collection
+     */
+    public function find($root, array $request): Post
+    {
+        return Post::find($request['id']);
     }
 }
