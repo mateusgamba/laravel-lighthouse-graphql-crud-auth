@@ -2,6 +2,8 @@
 
 This boilerplate provides a simple and powerful start for your API.
 
+Try out the [Demo](https://laravel-lighthouse.herokuapp.com/graphql-playground).
+
 It provides the following features:
 
 * CRUD (create / read / update / delete) on posts
