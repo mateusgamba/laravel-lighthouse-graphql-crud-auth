@@ -14,7 +14,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-      
+
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
@@ -50,7 +50,8 @@ jobs:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-        command: 
+        command:
+          composer install --optimize-autoloader --no-dev
           php artisan migrate:fresh --seed --force
           php artisan passport:install --force
           php artisan lighthouse:validate-schema
