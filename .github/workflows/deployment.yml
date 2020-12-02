@@ -29,11 +29,22 @@ jobs:
       env:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
-      run: vendor/bin/phpunit
+      run:
+        vendor/bin/phpunit
+        php artisan lighthouse:validate-schema
     - name: Deploy to Heroku
       uses: AkhileshNS/heroku-deploy@v3.6.8
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
         heroku_email: ${{secrets.HEROKU_EMAIL}}
         heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
-
+    - name: Heroku Run
+      uses: michcio1234/heroku-run@0.1.1
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_email: ${{secrets.HEROKU_EMAIL}}
+        heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+        command: 
+          php artisan migrate:fresh --seed --force
+          php artisan passport:install --force
+          php artisan lighthouse:validate-schema
