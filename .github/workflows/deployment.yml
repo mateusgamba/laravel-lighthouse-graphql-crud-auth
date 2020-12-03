@@ -53,5 +53,4 @@ jobs:
         command:
           composer install --optimize-autoloader --no-dev
           php artisan migrate:fresh --seed --force
-          php artisan passport:install --force
           php artisan lighthouse:validate-schema

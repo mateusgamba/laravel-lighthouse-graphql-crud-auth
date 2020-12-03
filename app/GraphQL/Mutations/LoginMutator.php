@@ -60,12 +60,10 @@ class LoginMutator
      */
     public function oAuthRequest(string $grantType, array $data): array
     {
-        $oClient = OClient::where('password_client', 1)->first();
-
         $dataClient = [
             'grant_type' => $grantType,
-            'client_id' => $oClient->id,
-            'client_secret' => $oClient->secret,
+            'client_id' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_ID'),
+            'client_secret' => env('PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET'),
             'scope' => '',
         ];
 
