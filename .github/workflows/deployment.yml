@@ -52,5 +52,7 @@ jobs:
         heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
         command:
           composer install --optimize-autoloader --no-dev
-          php artisan migrate:fresh --seed --force
+          php artisan migrate:fresh --force
+          php artisan db:seed --force
+          php artisan passport:client --password --name=boilerplate --provider=users
           php artisan lighthouse:validate-schema
