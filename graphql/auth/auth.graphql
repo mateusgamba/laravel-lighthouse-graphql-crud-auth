@@ -7,8 +7,15 @@ type Auth {
 
 extend type Mutation {
     login(email: String!, password: String!): Auth!
-    @field(resolver: "LoginMutator@login")
+    @field(resolver: "AuthMutator@login")
+    @loginValidation
 
-    refresh: Auth!
-    @field(resolver: "LoginMutator@refresh")
+    refreshToken(refresh_token: String!): Auth!
+    @field(resolver: "AuthMutator@refreshToken")
+    @refreshTokenValidation
+}
+
+extend type Mutation @guard {
+    logout: MessageResponse!
+    @field(resolver: "AuthMutator@logout")
 }

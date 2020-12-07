@@ -1,5 +1,6 @@
 <?php
 
 return [
-    'deleted' => 'Successfully deleted',
+    'deleted' => 'Successfully deleted.',
+    'logout' => 'Successfully logged out.',
 ];

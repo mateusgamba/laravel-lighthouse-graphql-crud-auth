@@ -75,7 +75,7 @@ php artisan db:seed
 ### Generates the encryption keys
 
 ```
-php artisan passport:install --force
+php artisan passport:client --password --provider=users --name=boilerplate
 ```
 
 ## Testing Graphql
@@ -115,19 +115,20 @@ mutation {
   }
 }
 
-"""
-To get a new token you must add refresh-token parameter to HTTP Headers.
-
-{
-  "refresh-token": "{RefreshToken}"
-}
-"""
 mutation {
-  refresh {
+  refreshToken(
+    refresh_token: "def50200c767e126a49b1..."
+  ) {
     access_token
     refresh_token
     token_type
     expires_in
+  }
+}
+
+mutation {
+  logout {
+    message
   }
 }
 
@@ -138,11 +139,14 @@ The Post Mutation needs Authentication, you must add Bearer Authentication to He
 
 ```
 {
-  "Authorization": "Bearer __TOKEN__"
+  "Authorization": "Bearer {Enter the token generated here}"
 }
 ```
 
 ```graphql
+"""
+Create a new Post
+"""
 mutation {
   createPost(title: "Hello", content: "Hello World") {
     id
@@ -155,6 +159,9 @@ mutation {
   }
 }
 
+"""
+Update an existing Post
+"""
 mutation {
   updatePost(id: 1, post: { title: "Working", content: "It's working" }) {
     id
@@ -167,6 +174,9 @@ mutation {
   }
 }
 
+"""
+Delete a Post
+"""
 mutation {
   deletePost(id: 1) {
     message

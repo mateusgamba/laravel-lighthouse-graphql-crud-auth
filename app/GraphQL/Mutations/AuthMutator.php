@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Laravel\Passport\Client as OClient;
 use App\GraphQL\Exceptions\CustomException;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
-class LoginMutator
+class AuthMutator
 {
     /**
      * @param null $root
@@ -18,7 +17,6 @@ class LoginMutator
      */
     public function login($root = null, array $request): array
     {
-
         $request = Arr::except($request, 'directive');
 
         if (!Auth::attempt($request)) {
@@ -36,13 +34,32 @@ class LoginMutator
      * @param array $request
      * @return array
      */
-    public function refresh($root = null, array $request, GraphQLContext $context): array
+    public function refreshToken($root = null, array $request): array
     {
-        $refreshToken = $context->request()->header('refresh-token');
+        $refreshToken = $request['refresh_token'];
 
         $data = [ 'refresh_token' => $refreshToken ];
 
         return $this->oAuthRequest('refresh_token', $data);
+    }
+
+    /**
+     * @param null $root
+     * @param array $request
+     * @return array
+     */
+    public function logout(): array
+    {
+        $user = Auth::user();
+        $tokenId = $user->token()->id;
+
+        $tokenRepository = app('Laravel\Passport\TokenRepository');
+        $refreshTokenRepository = app('Laravel\Passport\RefreshTokenRepository');
+
+        $tokenRepository->revokeAccessToken($tokenId);
+        $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
+
+        return ['message' => __('messages.logout')];
     }
 
     /**

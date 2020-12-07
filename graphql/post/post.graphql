@@ -11,6 +11,7 @@ extend type Query {
 
     post(id: ID!): Post!
     @field(resolver: "PostQuery@find")
+    @findPostIdValidation
 }
 
 extend type Mutation @guard {
@@ -19,15 +20,18 @@ extend type Mutation @guard {
         content: String!
     ): Post!
     @field(resolver: "PostMutator@store")
+    @createPostValidation
 
     updatePost(
         id: ID!
         post: PostUpdate!
     ): Post!
     @field(resolver: "PostMutator@update")
+    @updatePostValidation
 
     deletePost(id: ID!): MessageResponse!
     @field(resolver: "PostMutator@delete")
+    @findPostIdValidation
 }
 
 input PostUpdate {
