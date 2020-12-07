@@ -12,21 +12,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Login to Heroku Container registry
+    - run: |
+        git fetch --prune --unshallow
+    - name: Add remote origin
+      if: github.ref == 'refs/heads/master' && job.status == 'success' #we specify that this action will ONLY run if everything up to now is successful- so if theres a fail in the tests, then this will not be deployed.
       run: |
-        heroku login
-        heroku access --app=${{ secrets.HEROKU_APP_NAME }}
-        git push heroku master
-
-    - name: Build and push
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
-
-    - name: Release
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web
+        git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
+    - name: Deploy to Heroku
+      run: |
+        git push heroku HEAD:master -f
 
     - name: Heroku Run
       uses: michcio1234/heroku-run@0.1.1
