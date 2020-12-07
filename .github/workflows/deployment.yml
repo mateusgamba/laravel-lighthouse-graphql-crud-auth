@@ -13,9 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Login to Heroku Container registry
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      run: heroku container:login
+      run: |
+        heroku login
+        heroku access --app=${{ secrets.HEROKU_APP_NAME }}
+        git push heroku master
 
     - name: Build and push
       env:
