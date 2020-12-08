@@ -4,11 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\hasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class Comment extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -17,9 +15,10 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
+        'post_id',
+        'name',
+        'email',
         'content',
-        'user_id',
     ];
 
     /**
@@ -35,24 +34,9 @@ class Post extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'title' => 'string',
+        'post_id' => 'int',
+        'name' => 'string',
+        'email' => 'string',
         'content' => 'string',
-        'user_id' => 'int',
     ];
-
-    /**
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * @return hasMany
-     */
-    public function comments(): hasMany
-    {
-        return $this->hasMany(Comment::class);
-    }
 }

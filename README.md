@@ -193,6 +193,13 @@ List all post
   posts {
     id
     title
+    content
+    comments {
+      id
+      name
+      email
+      content
+    }
     user {
       id
       name
@@ -207,10 +214,47 @@ Find post
   post(id: 1) {
     id
     title
+    content
+    comments {
+      id
+      name
+      email
+      content
+    }
     user {
       id
       name
     }
+  }
+}
+```
+
+### Comment Mutation
+
+```
+"""
+Create a new Post
+"""
+mutation {
+  createComment(
+    name: "John Doe"
+    email: "hello@helloworld.com"
+    content: "Hello World!"
+    post_id: 2
+  ) {
+    id
+    name
+    email
+    content
+  }
+}
+
+"""
+Delete a Comment
+"""
+mutation {
+  deleteComment(id: 2) {
+    message
   }
 }
 ```

@@ -1,0 +1,23 @@
+type Comment {
+    id: ID!
+    name: String
+    email: String
+    content: String
+}
+
+extend type Mutation {
+    createComment(
+        name: String!
+        email: String
+        content: String!
+        post_id: ID!
+    ): Comment!
+    @field(resolver: "CommentMutator@store")
+    @createCommentValidation
+}
+
+extend type Mutation @guard {
+    deleteComment(id: ID!): MessageResponse!
+    @field(resolver: "CommentMutator@delete")
+    @findCommentIdValidation
+}
