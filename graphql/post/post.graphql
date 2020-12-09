@@ -8,7 +8,7 @@ type Post {
 
 extend type Query {
     posts: [Post]!
-    @field(resolver: "PostQuery@all")
+    @paginate(builder: "App\\GraphQL\\Queries\\PostQuery@all")
 
     post(id: ID!): Post!
     @field(resolver: "PostQuery@find")

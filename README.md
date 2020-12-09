@@ -191,20 +191,31 @@ List all post
 """
 {
   posts {
-    id
-    title
-    content
-    comments {
-      id
-      name
-      email
-      content
+    data {
+        id
+        title
+        content
+        comments {
+            id
+            name
+            email
+            content
+        }
+        user {
+            id
+            name
+        }
     }
-    user {
-      id
-      name
+    paginatorInfo {
+      count
+      currentPage
+      firstItem
+      hasMorePages
+      lastItem
+      lastPage
+      perPage
+      total
     }
-  }
 }
 
 """

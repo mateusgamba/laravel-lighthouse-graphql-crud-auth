@@ -3,18 +3,18 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Post;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostQuery
 {
     /**
      * @param null $root
      * @param array $request
-     * @return Collection
+     * @return Builder
      */
-    public function all($root = null, array $request): Collection
+    public function all($root = null, array $request): Builder
     {
-        return Post::all();
+        return Post::query();
     }
 
     /**
