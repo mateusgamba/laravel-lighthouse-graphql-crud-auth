@@ -147,6 +147,22 @@ mutation {
   }
 }
 
+mutation {
+  updateUser(
+      id: 2
+      fields: {
+        name: "John Doe"
+        email: "johndoe@christmas.net"
+        password: "123456"
+        password_confirmation: "123456"
+      }
+  ) {
+    id
+    name
+    email
+  }
+}
+
 ```
 
 ### Post Mutation

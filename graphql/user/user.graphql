@@ -14,3 +14,19 @@ extend type Mutation {
     @field(resolver: "UserMutator@store")
     @createUserValidation
 }
+
+extend type Mutation @guard {
+    updateUser(
+        id: ID!
+        fields: UserUpdateInput!
+    ): User!
+    @field(resolver: "UserMutator@update")
+    @updateUserValidation
+}
+
+input UserUpdateInput {
+    name: String
+    email: String
+    password: String
+    password_confirmation: String
+}

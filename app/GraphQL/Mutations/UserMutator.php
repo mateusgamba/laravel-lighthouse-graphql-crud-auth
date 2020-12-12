@@ -18,4 +18,16 @@ class UserMutator
         User::create($request);
         return ['message' => __('messages.registered')];
     }
+
+    /**
+     * @param null $root
+     * @param array $request
+     * @return User
+     */
+    public function update($root = null, array $request): User
+    {
+        $user = User::find($request['id']);
+        $user->fill($request['fields'])->save();
+        return $user;
+    }
 }
