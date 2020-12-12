@@ -6,8 +6,14 @@ type Post {
     comments: [Comment]!
 }
 
+input PostSearchIdInput {
+    id: [ID]
+    title: String
+    content: String
+}
+
 extend type Query {
-    posts: [Post]!
+    posts(filter: PostSearchIdInput): [Post]!
     @paginate(builder: "App\\GraphQL\\Queries\\PostQuery@all")
 
     post(id: ID!): Post!

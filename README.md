@@ -222,7 +222,7 @@ mutation {
 List all post
 """
 {
-  posts {
+  posts(filter: { content: "%soluta%" }) {
     data {
         id
         title
