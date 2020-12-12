@@ -131,8 +131,24 @@ mutation {
     message
   }
 }
+```
+
+### User
+
+```graphql
+mutation {
+  createUser(
+    name: "John Doe"
+    email: "johndoe@christmas.com"
+    password: "123123"
+    password_confirmation: "123123"
+  ) {
+    message
+  }
+}
 
 ```
+
 ### Post Mutation
 
 The Post Mutation needs Authentication, you must add Bearer Authentication to Header.

@@ -3,3 +3,14 @@ type User {
     name: String
     email: String
 }
+
+extend type Mutation {
+    createUser(
+        name: String!
+        email: String!
+        password: String!
+        password_confirmation: String!
+    ): MessageResponse!
+    @field(resolver: "UserMutator@store")
+    @createUserValidation
+}
