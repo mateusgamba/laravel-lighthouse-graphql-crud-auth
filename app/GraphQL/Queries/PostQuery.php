@@ -3,10 +3,24 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Post;
+use App\Services\PostService;
 use Illuminate\Database\Eloquent\Builder;
 
 class PostQuery
 {
+    /**
+     * @var PostService
+     */
+    protected $service;
+
+    /**
+     * @param PostService $service
+     */
+    public function __construct(PostService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * @param null $root
      * @param array $request
@@ -16,7 +30,8 @@ class PostQuery
     {
         $query = Post::query();
 
-        if ($filter = $request['filter']) {
+        if (!empty($request['filter'])) {
+            $filter = $request['filter'];
             foreach (array_keys(array_filter($filter)) as $field) {
                 $value = $filter[$field];
                 if (is_string($value)) {
@@ -33,10 +48,10 @@ class PostQuery
     /**
      * @param null $root
      * @param array $request
-     * @return Collection
+     * @return Post
      */
     public function find($root, array $request): Post
     {
-        return Post::find($request['id']);
+        return $this->service->find((int)$request['id']);
     }
 }
