@@ -3,11 +3,25 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\Post;
+use App\Services\PostService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class PostMutator
 {
+    /**
+     * @var PostService
+     */
+    protected $service;
+
+    /**
+     * @param PostService $service
+     */
+    public function __construct(PostService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * @param null $root
      * @param array $request
@@ -17,7 +31,7 @@ class PostMutator
     {
         $request = Arr::except($request, 'directive');
         $request['user_id'] = Auth::user()->id;
-        return Post::create($request);
+        return $this->service->create($request);
     }
 
     /**
@@ -27,10 +41,8 @@ class PostMutator
      */
     public function update($root = null, array $request): Post
     {
-        $post = Post::find($request['id']);
-        $request['user_id'] = Auth::user()->id;
-        $post->fill($request['post'])->save();
-        return $post;
+        $request['post']['user_id'] = Auth::user()->id;
+        return $this->service->update($request['post'], $request['id']);
     }
 
     /**
@@ -40,7 +52,7 @@ class PostMutator
      */
     public function delete($root = null, array $request): array
     {
-        Post::destroy($request['id']);
+        $this->service->destroy($request['id']);
         return ['message' => __('messages.deleted')];
     }
 }

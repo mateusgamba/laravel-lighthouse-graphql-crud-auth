@@ -9,7 +9,11 @@ class FindPostIdValidationDirective extends ValidationDirective
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:App\Models\Post,id'],
+            'id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Post,id,deleted_at,NULL'
+            ],
         ];
     }
 }

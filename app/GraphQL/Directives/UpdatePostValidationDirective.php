@@ -9,7 +9,11 @@ class UpdatePostValidationDirective extends ValidationDirective
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer', 'exists:App\Models\Post,id'],
+            'id' => [
+                'required',
+                'integer',
+                'exists:App\Models\Post,id,deleted_at,NULL'
+            ],
             'post.title' => ['sometimes', 'required', 'string', 'max:255'],
             'post.content' => ['sometimes', 'required', 'string'],
         ];
