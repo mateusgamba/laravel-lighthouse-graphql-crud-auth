@@ -68,7 +68,7 @@ class PostRepository
     public function update(array $data, int $id): Post
     {
         $post = $this->post->find($id);
-        $post->fill($data)->save();
+        $post->update($data);
         return $post;
     }
 

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\hasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\RecordSignature;
 
 class Post extends Model
 {
     use HasFactory;
+    use RecordSignature;
     use SoftDeletes;
 
     /**
@@ -19,7 +21,8 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
-        'user_id',
+        'created_by',
+        'updated_by',
     ];
 
     /**
@@ -37,15 +40,24 @@ class Post extends Model
         'id' => 'integer',
         'title' => 'string',
         'content' => 'string',
-        'user_id' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int',
     ];
 
     /**
      * @return BelongsTo
      */
-    public function user(): BelongsTo
+    public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function updatedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 
     /**

@@ -184,7 +184,11 @@ mutation {
     id
     title
     content
-    user {
+    createdby {
+      id
+      name
+    }
+    updatedby {
       id
       name
     }
@@ -199,7 +203,11 @@ mutation {
     id
     title
     content
-    user {
+    createdby {
+      id
+      name
+    }
+    updatedby {
       id
       name
     }
@@ -233,7 +241,11 @@ List all post
             email
             content
         }
-        user {
+        createdby {
+            id
+            name
+        }
+        updatedby {
             id
             name
         }
@@ -264,9 +276,13 @@ Find post
       email
       content
     }
-    user {
-      id
-      name
+    createdby {
+        id
+        name
+    }
+    updatedby {
+        id
+        name
     }
   }
 }
@@ -274,7 +290,7 @@ Find post
 
 ### Comment Mutation
 
-```
+```graphql
 """
 Create a new Post
 """

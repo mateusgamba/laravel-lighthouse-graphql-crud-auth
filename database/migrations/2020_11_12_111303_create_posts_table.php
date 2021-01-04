@@ -15,7 +15,8 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('content');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('updated_by')->constrained('users');
             $table->softDeletes();
             $table->timestamps();
         });
