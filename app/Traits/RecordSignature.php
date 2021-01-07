@@ -10,7 +10,7 @@ trait RecordSignature
     /**
      * @return void
      */
-    public static function bootRecordSignature()
+    public static function bootRecordSignature(): void
     {
         self::observerCreating();
         self::observerUpdating();
@@ -20,7 +20,7 @@ trait RecordSignature
     /**
      * @return void
      */
-    protected static function observerCreating()
+    protected static function observerCreating(): void
     {
         static::creating(function (Model $model) {
             $model->created_by = Auth::User()->id;
@@ -31,7 +31,7 @@ trait RecordSignature
     /**
      * @return void
      */
-    protected static function observerUpdating()
+    protected static function observerUpdating(): void
     {
         static::updating(function (Model $model) {
             $model->updated_by = Auth::User()->id;
@@ -41,7 +41,7 @@ trait RecordSignature
     /**
      * @return void
      */
-    protected static function observerDeleted()
+    protected static function observerDeleted(): void
     {
         static::deleted(function (Model $model) {
             $model->fill(['updated_by' => Auth::user()->id]);

@@ -3,21 +3,30 @@
 namespace App\Repositories;
 
 use App\Models\Post;
+use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class PostRepository
 {
+    use Filterable;
+
     /**
-     * @var Post
+     * @var Model
      */
-    protected $post;
+    protected $model;
 
     /**
      * @param Post $post
      */
     public function __construct(Post $post)
     {
-        $this->post = $post;
+        $this->model = $post;
+    }
+
+    public function getModel(): Model
+    {
+        return $this->model;
     }
 
     /**
@@ -26,7 +35,7 @@ class PostRepository
      */
     public function find(int $id): Post
     {
-        return $this->post->find($id);
+        return $this->model->find($id);
     }
 
     /**
@@ -35,20 +44,7 @@ class PostRepository
      */
     public function all(?array $filter): Builder
     {
-        $query = $this->post->query();
-
-        if (!empty($filter)) {
-            foreach (array_keys(array_filter($filter)) as $field) {
-                $value = $filter[$field];
-                if (is_string($value)) {
-                    $query = $query->where($field, 'like', $value);
-                }
-                if (is_array($value)) {
-                    $query = $query->whereIn($field, $value);
-                }
-            }
-        }
-        return $query;
+        return $this->scopeQuery($filter);
     }
 
     /**
@@ -57,7 +53,7 @@ class PostRepository
      */
     public function create(array $data): Post
     {
-        return $this->post->create($data);
+        return $this->model->create($data);
     }
 
     /**
@@ -67,7 +63,7 @@ class PostRepository
      */
     public function update(array $data, int $id): Post
     {
-        $post = $this->post->find($id);
+        $post = $this->model->find($id);
         $post->update($data);
         return $post;
     }
@@ -78,7 +74,7 @@ class PostRepository
      */
     public function destroy(int $id): bool
     {
-        $this->post->destroy($id);
+        $this->model->destroy($id);
         return true;
     }
 }

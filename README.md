@@ -18,8 +18,8 @@ It provides the following features:
 * Application ready for production
 
 The API is developed with the following packages:
-* Laravel 8.14
-* Lighthouse GraphQL
+* Laravel (8.20.1v)
+* Lighthouse GraphQL (4.8v)
 * Authentication using Passport
 
 In addition, it is running on Docker.
