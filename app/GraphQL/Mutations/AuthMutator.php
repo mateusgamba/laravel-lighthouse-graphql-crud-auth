@@ -15,7 +15,7 @@ class AuthMutator
      * @param array $request
      * @return array
      */
-    public function login($root = null, array $request): array
+    public function login(?string $root, array $request): array
     {
         $request = Arr::except($request, 'directive');
 
@@ -34,7 +34,7 @@ class AuthMutator
      * @param array $request
      * @return array
      */
-    public function refreshToken($root = null, array $request): array
+    public function refreshToken(?string $root, array $request): array
     {
         $refreshToken = $request['refresh_token'];
 

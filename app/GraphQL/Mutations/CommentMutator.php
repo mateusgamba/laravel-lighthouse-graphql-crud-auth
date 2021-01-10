@@ -13,7 +13,7 @@ class CommentMutator
      * @param array $request
      * @return Post
      */
-    public function store($root = null, array $request): Comment
+    public function store(?string $root, array $request): Comment
     {
         $request = Arr::except($request, 'directive');
         return Comment::create($request);
@@ -24,7 +24,7 @@ class CommentMutator
      * @param array $request
      * @return array
      */
-    public function delete($root = null, array $request): array
+    public function delete(?string $root, array $request): array
     {
         Comment::destroy($request['id']);
         return ['message' => __('messages.deleted')];

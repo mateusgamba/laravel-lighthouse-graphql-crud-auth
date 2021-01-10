@@ -26,7 +26,7 @@ class PostQuery
      * @param array $request
      * @return Builder
      */
-    public function all(string $root = null, array $request): Builder
+    public function all(?string $root, array $request): Builder
     {
         return $this->service->all($request['filter'] ?? null);
     }

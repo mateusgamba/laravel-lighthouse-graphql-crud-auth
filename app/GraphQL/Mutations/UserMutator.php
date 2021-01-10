@@ -12,7 +12,7 @@ class UserMutator
      * @param array $request
      * @return array
      */
-    public function store($root = null, array $request): array
+    public function store(?string $root, array $request): array
     {
         $request = Arr::except($request, 'directive', 'password_confirmation');
         User::create($request);
@@ -24,7 +24,7 @@ class UserMutator
      * @param array $request
      * @return User
      */
-    public function update($root = null, array $request): User
+    public function update(?string $root, array $request): User
     {
         $user = User::find($request['id']);
         $user->fill($request['fields'])->save();

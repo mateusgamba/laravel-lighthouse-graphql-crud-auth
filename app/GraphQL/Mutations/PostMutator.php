@@ -26,7 +26,7 @@ class PostMutator
      * @param array $request
      * @return Post
      */
-    public function store($root = null, array $request): Post
+    public function store(?string $root, array $request): Post
     {
         $request = Arr::except($request, 'directive');
         return $this->service->create($request);
@@ -37,7 +37,7 @@ class PostMutator
      * @param array $request
      * @return Post
      */
-    public function update($root = null, array $request): Post
+    public function update(?string $root, array $request): Post
     {
         return $this->service->update($request['post'], $request['id']);
     }
@@ -47,7 +47,7 @@ class PostMutator
      * @param array $request
      * @return array
      */
-    public function delete($root = null, array $request): array
+    public function delete(?string $root, array $request): array
     {
         $this->service->destroy($request['id']);
         return ['message' => __('messages.deleted')];
