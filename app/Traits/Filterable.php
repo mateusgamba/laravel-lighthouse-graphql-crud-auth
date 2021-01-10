@@ -8,12 +8,11 @@ trait Filterable
 {
     /**
      * @param array $filter
-     *
      * @return Builder
      */
     public function scopeQuery(array $filter = []): Builder
     {
-        $query = $this->getModel()->query();
+        $query = $this->model->query();
         if (!empty($filter)) {
             foreach (array_keys(array_filter($filter)) as $field) {
                 $value = $filter[$field];

@@ -22,6 +22,11 @@ The API is developed with the following packages:
 * Lighthouse GraphQL (4.8v)
 * Authentication using Passport
 
+The following resources have been implemented
+* Repository pattern
+* Query filter trait
+
+
 In addition, it is running on Docker.
 
 ## Pre-requisites
