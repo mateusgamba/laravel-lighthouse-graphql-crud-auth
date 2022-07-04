@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^7.3|^8.0",
         "fakerphp/faker": "^1.13.0",
         "fideloper/proxy": "^4.4.1",
         "fruitcake/laravel-cors": "^2.0.3",
@@ -24,7 +24,7 @@
         "haydenpierce/class-finder": "^0.4.2",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "phpunit/phpunit": "^9.5.21"
     },
     "config": {
         "optimize-autoloader": true,
