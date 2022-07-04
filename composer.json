@@ -23,8 +23,8 @@
         "facade/ignition": "^2.5",
         "haydenpierce/class-finder": "^0.4.2",
         "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.5.21"
+        "nunomaduro/collision": "^5.0"
+
     },
     "config": {
         "optimize-autoloader": true,
