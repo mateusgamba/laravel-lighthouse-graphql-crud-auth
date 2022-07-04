@@ -24,7 +24,7 @@ services:
       - blog-network
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.2
     container_name: blog-db
     ports:
       - "3386:3306"
